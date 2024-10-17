@@ -3,7 +3,7 @@
 
 }
 
-:80 landsvagsteater.se {
+landsvagsteater.se {
     
     file_server {
         root /srv/tidsstangsel
