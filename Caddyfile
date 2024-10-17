@@ -3,7 +3,7 @@
 
 }
 
-landsvagsteater.se {
+https://tidsstangsel.up.railway.app {
     
     file_server {
         root /srv/tidsstangsel
