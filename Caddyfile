@@ -1,0 +1,16 @@
+{
+    admin off
+
+}
+
+:80 landsvagsteater.se {
+    
+    file_server {
+        root /srv/tidsstangsel
+    }
+    
+    header {
+        Access-Control-Allow-Origin openstreetmap.org
+    }
+
+}
