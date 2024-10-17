@@ -7,9 +7,9 @@ RUN mkdir -p /app/tidsstangsel
 COPY tidsstangsel_start.sh /app/tidsstangsel
 RUN chmod +x /app/tidsstangsel/tidsstangsel_start.sh
 
-RUN mkdir -p /srv/landsvagsteater
+RUN mkdir -p /srv/landsvagsteater /srv/landsvagsteater/audio
 
-COPY audio          /srv/landsvagsteater/audio
+#COPY audio          /srv/landsvagsteater/audio
 COPY tidsstangsel   /srv/landsvagsteater/tidsstangsel
 
 RUN apk add ffmpeg
