@@ -68,15 +68,21 @@
     var img_bounds_nw = [66.01764602127346,23.930111220862244];
     var img_bounds = L.latLngBounds([img_bounds_se,img_bounds_nw]);
 
-
+    const tileserver_url = 'https://tileserver.railway.internal/{z}/{x}/{y}.png';
+    const openstreetmap_url = 'https://tile.openstreetmap.org/{z}/{x}/{y}.png';
     //var img_bounds = L.latLngBounds([[65.92964186905581,23.687173656890252],[65.97238087976748,23.880500232514976]]);
     const tile_url = 'https://tile.openstreetmap.org/{z}/{x}/{y}.png';
-    var map_tiles = L.tileLayer(tile_url,{
+    var map_tiles = L.tileLayer(tileserver_url,{
+        maxZoom: maxZoom
+    });
+
+    var maptiles_openstreetmap = L.tileLayer(tile_url,{
         maxZoom: maxZoom,
         referrerPolicy:'origin',
         crossOrigin:'anonymous',
         attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'
     });
+    map_tiles.addTo(map_obj);
 
     var perim = L.polygon(perim_coords,{ color:'blue', fillOpacity: 0.1, interactive: false});
     var imgovrlay = L.imageOverlay(imageUrl, img_bounds, {opacity:0.35});
