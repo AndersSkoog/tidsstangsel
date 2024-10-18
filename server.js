@@ -1,5 +1,6 @@
 const express = require('express');
 const multer = require('multer');
+const cors = require('cors');
 const { spawn } = require('child_process');
 const { rateLimit } = require('express-rate-limit');
 const path = require('path');
@@ -56,10 +57,17 @@ const limiter = rateLimit({
 });
 
 
+app.use(cors({
+    origin: ['https://tile.openstreetmap.org','https://a.tile.openstreetmap.org','https://c.tile.openstreetmap.org','https://b.tile.openstreetmap.org', 'https://www.openstreetmap.org','https://openstreetmap.org'],  // Specify allowed origins
+    methods: ['GET']
+}));
+
+/*
 app.use((req, res, next) => {
     res.setHeader("Content-Security-Policy", "default-src 'self'; img-src 'self' data: *.tile.openstreetmap.org; script-src 'self'; style-src 'self' 'unsafe-inline' *.openstreetmap.org; connect-src 'self';");
     next();
 });
+*/
 
 app.use('/static', express.static(path.join(__dirname, 'static')));
 
