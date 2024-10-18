@@ -6,7 +6,7 @@ COPY static /tidsstangsel/static
 COPY uploads /tidsstangsel/uploads
 COPY server.js /tidsstangsel
 COPY package.json /tidsstangsel
-WORKDIR /tidsstangsel
+WORKDIR tidsstangsel
 RUN npm install
 
 CMD npm run start

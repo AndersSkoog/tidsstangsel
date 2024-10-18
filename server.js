@@ -15,6 +15,20 @@ const uploadDir = path.join(__dirname, 'uploads');
 const admin_allowedIps = ['77.218.225.119'];
 const upload = multer({ dest: uploadDir });
 
+app.use((req, res, next) => {
+    // Log request headers
+    console.log('Request Headers:', req.headers);
+
+    // Listen for the response to log response headers
+    res.on('finish', () => {
+        console.log('Response Headers:', res.getHeaders());
+    });
+
+    next(); // Call the next middleware or route handler
+});
+
+
+
 const start_stream = (inpath) => {
     const ffmpegProcess = spawn('ffmpeg', [
         '-re',
@@ -34,7 +48,6 @@ const start_stream = (inpath) => {
       console.error(`Failed to start FFmpeg: ${err.message}`);
     });
 } 
-
 
 const ipCheck = (req, res, next) => {
     const clientIp = req.ip; // Get the client's IP address
@@ -81,7 +94,7 @@ const osmProxy = createProxyMiddleware({
 
 //app.use(helmet());
 app.use('/static', express.static(path.join(__dirname, 'static')));
-app.use('/osm', osmProxy, (req, res) => {
+app.use('/osm',reqlog, osmProxy, (req, res) => {
     res.setHeader('Content-Type', 'image/png');
     console.log(`Requesting tile: z=${req.params.z}, x=${req.params.x}, y=${req.params.y}`);
     next(); 
@@ -95,16 +108,17 @@ app.get('/osm/*', (req, res) => {
 });
 */
 
-app.get('/tidsstangsel', (req, res)=> {
+app.get('/tidsstangsel',reqlog (req, res)=> {
     res.sendFile('tidsstangsel.html',{root:pageDir});
+
 });
 
-app.get('/test', (req, res)=> {
+app.get('/test',reqlog, (req, res)=> {
     res.sendFile('tidsstangseltest.html',{root:pageDir});
 });
 
 
-app.get('/stream/:file', (req, res) => {
+app.get('/stream/:file',reqlog, (req, res) => {
     const fileName = req.params.file;  // Get the file name from the URL
     res.sendFile(fileName,{root:streamDir,cacheControl:false});
 });
