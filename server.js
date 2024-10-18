@@ -111,8 +111,7 @@ app.get('/osm/:z/:x/:y', (req, res) => {
       path: `/${z}/${x}/${y}.png`,
       method: 'GET',
       headers: {
-        'Accept': 'image/png,image/*;q=0.8',
-        'Connection': 'close'
+        'Accept': 'image/png,image/*;q=0.8'
       }
     };
   
