@@ -70,9 +70,8 @@
 
 
     //var img_bounds = L.latLngBounds([[65.92964186905581,23.687173656890252],[65.97238087976748,23.880500232514976]]);
-
-
-    var map_tiles = L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png');
+    var tile_url = "https://"+window.location.hostname+"/osm/{z}/{x}/{y}.png";
+    var map_tiles = L.tileLayer(tile_url);
 
     var perim = L.polygon(perim_coords,{ color:'blue', fillOpacity: 0.1, interactive: false});
     var imgovrlay = L.imageOverlay(imageUrl, img_bounds, {opacity:0.35});

@@ -56,12 +56,6 @@ const limiter = rateLimit({
 	legacyHeaders: false, // Disable the `X-RateLimit-*` headers
 });
 
-
-app.use(cors({
-    origin: '*',
-    methods: ['GET']
-}));
-
 //sapp.use('/tiles', express.static(path.join(__dirname, 'tiles')));
 
 /*
@@ -73,6 +67,12 @@ app.use((req, res, next) => {
 */
 
 app.use('/static', express.static(path.join(__dirname, 'static')));
+
+app.get('/osm/*', (req, res) => {
+    const url = req.url.replace('/osm/', 'https://tile.openstreetmap.org/');
+    req.pipe(request(url)).pipe(res);
+});
+
 
 app.get('/tidsstangsel', (req, res)=> {
     res.sendFile('tidsstangsel.html',{root:pageDir});
