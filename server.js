@@ -1,4 +1,4 @@
-import helmet from "helmet";
+//import helmet from "helmet";
 const express = require('express');
 const multer = require('multer');
 const cors = require('cors');
@@ -79,7 +79,7 @@ const osmProxy = createProxyMiddleware({
     }
 });
 
-app.use(helmet());
+//app.use(helmet());
 app.use('/static', express.static(path.join(__dirname, 'static')));
 app.use('/osm', osmProxy, (req, res) => {
     res.setHeader('Content-Type', 'image/png');
@@ -135,10 +135,7 @@ app.post('/streaminit',ipCheck, limiter, upload.single('file'), (req, res)=> {
 });
 
 
-
 // Start the server
 app.listen(port, () => {
   console.log(`Server running at http://localhost:${port}`);
 });
-
-"ffmpeg -re -stream_loop -1 -i tidsstangsel.mp3 -f hls -hls_time 3 -hls_list_size 2 -hls_flags delete_segments -strftime 1 -hls_segment_filename 'tidsstangsel-%Y%m%d-%s.ts' /srv/site/stream/tidsstangsel.m3u8 &"
