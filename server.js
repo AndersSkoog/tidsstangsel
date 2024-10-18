@@ -1,3 +1,4 @@
+import helmet from "helmet";
 const express = require('express');
 const multer = require('multer');
 const cors = require('cors');
@@ -61,7 +62,6 @@ const limiter = rateLimit({
 
 /*
 app.use((req, res, next) => {
-
     res.setHeader("Content-Security-Policy", "default-src 'self'; img-src 'self' data: *.tile.openstreetmap.org; script-src 'self'; style-src 'self'");
     next();
 });
@@ -79,8 +79,11 @@ const osmProxy = createProxyMiddleware({
     }
 });
 
+app.use(helmet());
 app.use('/static', express.static(path.join(__dirname, 'static')));
-app.use('/osm', osmProxy);
+app.use('/osm', osmProxy, (req, res) => {
+    res.setHeader('Content-Type', 'image/png');
+});
 
 
 /*

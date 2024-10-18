@@ -74,6 +74,7 @@
 
     var tile_url = "https://"+window.location.hostname+"/osm/{z}/{x}/{y}.png";
     var map_tiles = L.tileLayer(tile_url);
+    map_tiles.addTo(map_obj);
 
     var perim = L.polygon(perim_coords,{ color:'blue', fillOpacity: 0.1, interactive: false});
     var imgovrlay = L.imageOverlay(imageUrl, img_bounds, {opacity:0.35});
