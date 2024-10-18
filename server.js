@@ -108,7 +108,7 @@ app.get('/osm/*', (req, res) => {
 });
 */
 
-app.get('/tidsstangsel',reqlog (req, res)=> {
+app.get('/tidsstangsel', (req, res)=> {
     res.sendFile('tidsstangsel.html',{root:pageDir});
 
 });
