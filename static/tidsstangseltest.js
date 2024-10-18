@@ -70,7 +70,7 @@
 
 
     //var img_bounds = L.latLngBounds([[65.92964186905581,23.687173656890252],[65.97238087976748,23.880500232514976]]);
-    var tile_url = "https://"+window.location.hostname+"/osm/{z}/{x}/{y}.png";
+    const tile_url = 'https://tile.openstreetmap.org/{z}/{x}/{y}.png';
     var map_tiles = L.tileLayer(tile_url,{
         maxZoom: maxZoom,
         attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'

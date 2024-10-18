@@ -1,6 +1,5 @@
 //import helmet from "helmet";
 const express = require('express');
-const https = require('https');
 const multer = require('multer');
 const cors = require('cors');
 const { spawn } = require('child_process');
@@ -21,8 +20,8 @@ app.use((req, res, next) => {
     console.log('Request Headers:', req.headers);
     var hn = req.protocol+req.hostname;
     console.log("login hostname:", hn);
-    res.setHeader('Access-Control-Allow-Origin', '*');
-    res.setHeader('Referrer-Policy', 'no-referrer');
+    //res.setHeader('Access-Control-Allow-Origin', '*');
+    //res.setHeader('Referrer-Policy', 'no-referrer');
     // Listen for the response to log response headers
     res.on('finish', () => {
         console.log('Response Headers:', res.getHeaders());
@@ -96,43 +95,6 @@ const osmProxy = createProxyMiddleware({
     }
 });
 */
-
-const proxyReqHeaders = {
-    'Accect': 'image/png, image/*;q=0.8'
-};
-const proxyResHeaders = {
-    'Accect': 'image/png, image/*;q=0.8'
-}
-
-app.get('/osm/:z/:x/:y', (req, res) => {
-    const { z, x, y } = req.params;
-  
-    const options = {
-      hostname: 'tile.openstreetmap.org',
-      path: `/${z}/${x}/${y}.png`,
-      method: 'GET',
-      headers: {
-        'Accept': 'image/png,image/*;q=0.8'
-      }
-    };
-  
-    // Make the request to OpenStreetMap
-    const proxyReq = https.request(options, proxyRes => {
-      console.log("proxyres_headers:",proxyRes.headers);
-      res.writeHead(proxyRes.statusCode, proxyRes.headers); // Forward the status code and headers
-      //res.writeHead('Access-Control-Allow-Origin', '*');
-      // Stream the response back to the client
-      proxyRes.pipe(res, { end: true });
-    });
-
-    proxyReq.on('error', (err) => {
-      console.error('Proxy Request Error:', err);
-      res.status(500).send('Error in proxying request');
-    });
-  
-    proxyReq.end(); // End the request
-  });
-
 
 
 //app.use(helmet());
