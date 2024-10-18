@@ -9,4 +9,5 @@ COPY package.json /tidsstangsel
 WORKDIR /tidsstangsel
 RUN npm install
 
+CMD npm run start
 
