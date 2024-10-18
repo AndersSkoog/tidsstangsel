@@ -22,6 +22,7 @@ app.use((req, res, next) => {
     var hn = req.protocol+req.hostname;
     console.log("login hostname:", hn);
     res.setHeader('Access-Control-Allow-Origin', '*');
+    res.setHeader('Referrer-Policy', 'no-referrer');
     // Listen for the response to log response headers
     res.on('finish', () => {
         console.log('Response Headers:', res.getHeaders());
