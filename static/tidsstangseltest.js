@@ -62,7 +62,7 @@
         maxZoom:maxZoom
     });
 
-    var imageUrl = './verner_bostrom.jpg';
+    var imageUrl = '/static/verner_bostrom.jpg';
     
     var img_bounds_se = [65.8701617972998,23.545387239604423];
     var img_bounds_nw = [66.01764602127346,23.930111220862244];
@@ -72,7 +72,7 @@
     //var img_bounds = L.latLngBounds([[65.92964186905581,23.687173656890252],[65.97238087976748,23.880500232514976]]);
 
 
-    var map_tiles = L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png');
+    var map_tiles = L.tileLayer('`https://api.maptiler.com/maps/streets/tiles/{z}/{x}/{y}.png?key=jSU91TnyBylrPHjjQvrJ`');
 
 
     var perim = L.polygon(perim_coords,{ color:'blue', fillOpacity: 0.1, interactive: false});
