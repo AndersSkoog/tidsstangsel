@@ -66,13 +66,28 @@ app.use((req, res, next) => {
 });
 */
 
-app.use('/static', express.static(path.join(__dirname, 'static')));
+const osmProxy = createProxyMiddleware({
+    target: 'https://tile.openstreetmap.org', // Base URL of the tile server
+    changeOrigin: true,
+    pathRewrite: {
+        '^/osm': '', // Strip the /osm prefix from the path
+    },
+    onError: (err, req, res) => {
+        console.error('Proxy error:', err);
+        res.status(500).send("Internal server error");
+    }
+});
 
+app.use('/static', express.static(path.join(__dirname, 'static')));
+app.use('/osm', osmProxy);
+
+
+/*
 app.get('/osm/*', (req, res) => {
     const url = req.url.replace('/osm/', 'https://tile.openstreetmap.org/');
     req.pipe(request(url)).pipe(res);
 });
-
+*/
 
 app.get('/tidsstangsel', (req, res)=> {
     res.sendFile('tidsstangsel.html',{root:pageDir});
