@@ -75,6 +75,8 @@
     const tile_url = 'https://tile.openstreetmap.org/{z}/{x}/{y}.png';
     var map_tiles = L.tileLayer(tile_url,{
         maxZoom: maxZoom,
+        referrerPolicy:'origin',
+        crossOrigin:'anonymous',
         attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'
     });
     map_tiles.addTo(map_obj);
