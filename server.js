@@ -62,11 +62,12 @@ app.use(cors({
     methods: ['GET']
 }));
 
-app.use('/tiles', express.static(path.join(__dirname, 'tiles')));
+//sapp.use('/tiles', express.static(path.join(__dirname, 'tiles')));
 
 /*
 app.use((req, res, next) => {
-    res.setHeader("Content-Security-Policy", "default-src 'self'; img-src 'self' data: *.tile.openstreetmap.org; script-src 'self'; style-src 'self' 'unsafe-inline' *.openstreetmap.org; connect-src 'self';");
+
+    res.setHeader("Content-Security-Policy", "default-src 'self'; img-src 'self' data: *.tile.openstreetmap.org; script-src 'self'; style-src 'self'");
     next();
 });
 */
