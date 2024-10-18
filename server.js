@@ -19,7 +19,9 @@ const upload = multer({ dest: uploadDir });
 app.use((req, res, next) => {
     // Log request headers
     console.log('Request Headers:', req.headers);
-
+    var hn = req.protocol+req.hostname;
+    console.log("login hostname:", hn);
+    res.setHeader('Access-Control-Allow-Origin', '*');
     // Listen for the response to log response headers
     res.on('finish', () => {
         console.log('Response Headers:', res.getHeaders());
@@ -110,16 +112,19 @@ app.get('/osm/:z/:x/:y', (req, res) => {
       method: 'GET',
       headers: {
         'Accept': 'image/png,image/*;q=0.8',
+        'Connection': 'close'
       }
     };
   
     // Make the request to OpenStreetMap
     const proxyReq = https.request(options, proxyRes => {
+      console.log("proxyres_headers:",proxyRes.headers);
       res.writeHead(proxyRes.statusCode, proxyRes.headers); // Forward the status code and headers
+      //res.writeHead('Access-Control-Allow-Origin', '*');
       // Stream the response back to the client
       proxyRes.pipe(res, { end: true });
     });
-  
+
     proxyReq.on('error', (err) => {
       console.error('Proxy Request Error:', err);
       res.status(500).send('Error in proxying request');
