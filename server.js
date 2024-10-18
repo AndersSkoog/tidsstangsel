@@ -83,6 +83,8 @@ const osmProxy = createProxyMiddleware({
 app.use('/static', express.static(path.join(__dirname, 'static')));
 app.use('/osm', osmProxy, (req, res) => {
     res.setHeader('Content-Type', 'image/png');
+    console.log(`Requesting tile: z=${req.params.z}, x=${req.params.x}, y=${req.params.y}`);
+    next(); 
 });
 
 
