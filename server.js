@@ -58,7 +58,7 @@ const limiter = rateLimit({
 
 
 app.use(cors({
-    origin: ['https://tile.openstreetmap.org','https://a.tile.openstreetmap.org','https://c.tile.openstreetmap.org','https://b.tile.openstreetmap.org', 'https://www.openstreetmap.org','https://openstreetmap.org'],  // Specify allowed origins
+    origin: '*',
     methods: ['GET']
 }));
 
