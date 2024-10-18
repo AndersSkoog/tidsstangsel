@@ -35,7 +35,7 @@ const start_stream = (inpath) => {
 
 const ipCheck = (req, res, next) => {
     const clientIp = req.ip; // Get the client's IP address
-    
+
     // Log the incoming IP for debugging
     console.log('Incoming IP:', clientIp);
 
@@ -53,6 +53,12 @@ const limiter = rateLimit({
 	limit: 3, // Limit each IP to 100 requests per `window` (here, per 15 minutes)
 	standardHeaders: false, // Return rate limit info in the `RateLimit-*` headers
 	legacyHeaders: false, // Disable the `X-RateLimit-*` headers
+});
+
+
+app.use((req, res, next) => {
+    res.setHeader("Content-Security-Policy", "default-src 'self'; img-src 'self' data: *.tile.openstreetmap.org; script-src 'self'; style-src 'self' 'unsafe-inline' *.openstreetmap.org; connect-src 'self';");
+    next();
 });
 
 app.use('/static', express.static(path.join(__dirname, 'static')));
