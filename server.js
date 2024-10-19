@@ -142,7 +142,7 @@ const TILE_SERVER_HOST = 'https://api.maptiler.com';
 
 app.get('/tiles/:z/:x/:y', (req, res) => {
     const { z, x, y } = req.params;
-    console.log(req.headers);
+    console.log("tilereqest_headers",req.headers);
     const requrl = `${TILE_SERVER_HOST}/maps/topo/${z}/${x}/${y}.png?key=${maptiler_apikey}`;
     const options = {
         hostname: TILE_SERVER_HOST,

@@ -1,5 +1,5 @@
 (function(){
-    var mapTilerUrl = '/tile/{z}/{x}/{y}';
+    var mapTilerUrl = '/tiles/{z}/{x}/{y}';
     const center_btn = document.getElementById('center_to_pos_btn');
     const audio_element = document.getElementById('audio_element');
     var hls = null;
