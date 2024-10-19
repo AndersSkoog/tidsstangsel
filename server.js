@@ -27,7 +27,7 @@ app.use((req, res, next) => {
 
     // Setting security and CORS headers in the response
     res.setHeader('Access-Control-Allow-Origin', '*');
-    
+    res.setHeader('Referrer-Policy', 'no-referrer');
     // Set the modified headers in the response (if needed)
     //res.setHeader('Sec-Fetch-Mode', 'cors');
     //res.setHeader('Sec-Fetch-Site', 'cross-site');
