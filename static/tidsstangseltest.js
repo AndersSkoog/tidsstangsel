@@ -1,5 +1,6 @@
 (function(){
-    
+    const apikey = 'UlZm4aEVd5R6TdbUgwrH';
+    var mapTilerUrl = 'https://api.maptiler.com/maps/topo/{z}/{x}/{y}.png?key='+apikey; 
     const center_btn = document.getElementById('center_to_pos_btn');
     const audio_element = document.getElementById('audio_element');
     var hls = null;
@@ -46,7 +47,6 @@
         {lat:66.07861884433791,lng:23.42988796767048 }
     ];
     const default_sim_loc = {lat:65.95112593241089,lng:23.41035690712829};
-
     const map_bounds_se = {lat:66.10841570645661,lng:24.308165089469185};
     const map_bounds_nw = {lat:65.79491483132819,lng:23.3649201362781};
     const map_bounds = L.latLngBounds(map_bounds_se,map_bounds_nw);
@@ -63,24 +63,17 @@
     });
 
     var imageUrl = '/static/verner_bostrom.jpg';
-    
     var img_bounds_se = [65.8701617972998,23.545387239604423];
     var img_bounds_nw = [66.01764602127346,23.930111220862244];
     var img_bounds = L.latLngBounds([img_bounds_se,img_bounds_nw]);
 
-    const tileserver_url = 'https://tidsstangsel-maptiles-stage.up.railway.app/styles/klokantech-basic/{z}/{x}/{y}.png'
-    const openstreetmap_url = 'https://tile.openstreetmap.org/{z}/{x}/{y}.png';
-    //var img_bounds = L.latLngBounds([[65.92964186905581,23.687173656890252],[65.97238087976748,23.880500232514976]]);
-    var map_tiles = L.tileLayer(tileserver_url,{
-        maxZoom: maxZoom
-    });
-    /*
-    var maptiles_openstreetmap = L.tileLayer(tileserver_url,{
-        maxZoom: maxZoom,
-        attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'
-    });
-    */
-    map_tiles.addTo(map_obj);
+    var map_tiles = L.tileLayer(mapTilerUrl, {
+        attribution: '&copy; <a href="https://www.maptiler.com/copyright/">MapTiler</a> contributors',
+        minZoom:10,
+        maxZoom: 18,
+    }).addTo(map_obj);  
+    map_obj.setMaxBounds(map_bounds);
+    map_obj.fitBounds(map_bounds);
 
     var perim = L.polygon(perim_coords,{ color:'blue', fillOpacity: 0.1, interactive: false});
     var imgovrlay = L.imageOverlay(imageUrl, img_bounds, {opacity:0.35});
@@ -234,9 +227,6 @@
             prev_loc = new_loc;
         }
     }
-
-
-
 
     function track_location(test){
 
@@ -393,7 +383,5 @@
             alert("Din webbläsare stödjer ej hls ljudkodec!");
         }
     }
-
     initialize_test();
-
 }())
