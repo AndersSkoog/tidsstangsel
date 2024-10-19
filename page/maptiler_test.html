@@ -3,24 +3,40 @@
   <head>
     <meta name="viewport" content="initial-scale=1,maximum-scale=1,user-scalable=no" />
     <title>Vector Tiles in Leaflet JS</title>
-    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
-    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
-    <script src="https://cdn.maptiler.com/maptiler-sdk-js/v2.3.0/maptiler-sdk.umd.js"></script>
-    <link href="https://cdn.maptiler.com/maptiler-sdk-js/v2.3.0/maptiler-sdk.css" rel="stylesheet" />
-    <script src="https://cdn.maptiler.com/leaflet-maptilersdk/v2.0.0/leaflet-maptilersdk.js"></script>
+    <script src="https://unpkg.com/maplibre-gl@^4.7.1/dist/maplibre-gl.js"></script>
+    <link href="https://unpkg.com/maplibre-gl@^4.7.1/dist/maplibre-gl.css" rel="stylesheet" />
     <style>
-      #map {position: absolute; top: 0; right: 0; bottom: 0; left: 0;}
+      #map {
+        position: absolute; 
+        top: 0; 
+        right: 0; 
+        bottom: 0; 
+        left: 0;
+        height:90%; 
+        width: 100%;
+    }
     </style>
   </head>
   <body>
     <div id="map"></div>
     <script>
-      const key = 'jSU91TnyBylrPHjjQvrJ';
-      const map = L.map('map').setView([0, 0], 1);
-      const mtLayer = L.maptilerLayer({
-        apiKey: key,
-        style: "7140bd63-c77d-4259-b929-2e748e156f55", //optional
-      }).addTo(map);
+        const bounds_se = {lat:65.780251,lng:22.563171};
+        const bounds_nw = {lat:66.415649,lng:24.342957};
+        //const map_bounds_se = {lat:66.10841570645661,lng:24.308165089469185};
+        //const map_bounds_nw = {lat:65.79491483132819,lng:23.3649201362781};
+        const map_bb = L.latLngBounds([[66.10841570645661,24.308165089469185],[65.79491483132819,23.3649201362781]]);
+        const map_center = {lat:65.94215788637115,lng:23.77156416494242};
+        const key = 'jSU91TnyBylrPHjjQvrJ';
+        const max_zoom = 18;
+        const min_zoom = 9;
+        const map = L.map('map').setView(map_center, 7);
+        const mtLayer = L.maptilerLayer({
+            apiKey: key,
+            style: "7140bd63-c77d-4259-b929-2e748e156f55", //optional
+        }).addTo(map);
+        map_obj.setMaxBounds(map_bb);
+        map_obj.fitBounds(map_bb);
+
     </script>
   </body>
 </html>

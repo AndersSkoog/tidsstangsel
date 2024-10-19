@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Simple Map</title>
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+    <style>
+        #map {
+            height: 500px; /* Set map height */
+        }
+    </style>
+</head>
+<body>
+    <div id="map"></div>
+
+    <script>
+        // Initialize the map and set the view to the specified region
+        var map = L.map('map').setView([65.7, 24.1], 10);  // Change lat, lng, zoom level as needed
+
+        // Add OpenStreetMap tiles (or use your own tile server if necessary)
+        L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+            maxZoom: 18,
+            attribution: '© OpenStreetMap contributors'
+        }).addTo(map);
+
+        // Add a marker to the map at a specified location
+        var marker = L.marker([65.8, 24.0], { draggable: true }).addTo(map);
+
+        // Define the polygon coordinates and add it to the map
+        var polygon = L.polygon([
+            [65.9, 24.0],
+            [65.9, 24.3],
+            [65.7, 24.3],
+            [65.7, 24.0]
+        ]).addTo(map);
+
+        // Handle marker movement
+        marker.on('dragend', function (e) {
+            var markerPosition = marker.getLatLng();
+            alert("Marker moved to: " + markerPosition.lat + ", " + markerPosition.lng);
+        });
+    </script>
+</body>
+</html>
