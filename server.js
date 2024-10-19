@@ -1,8 +1,8 @@
 //import helmet from "helmet";
 const express = require('express');
 const multer = require('multer');
-//const https = require('https')
-//const cors = require('cors');
+const https = require('https')
+const cors = require('cors');
 const { spawn } = require('child_process');
 const { createProxyMiddleware } = require('http-proxy-middleware');
 const { rateLimit } = require('express-rate-limit');
@@ -15,7 +15,6 @@ const streamDir = path.join(__dirname, 'stream');
 const uploadDir = path.join(__dirname, 'uploads');
 const admin_allowedIps = ['77.218.225.119'];
 const upload = multer({ dest: uploadDir });
-
 
 app.use((req, res, next) => {
     // Clone request headers to modify them
@@ -86,6 +85,7 @@ const limiter = rateLimit({
 	legacyHeaders: false, // Disable the `X-RateLimit-*` headers
 });
 
+app.use('/static', express.static(path.join(__dirname, 'static')))
 
 app.get('/tidsstangsel', (req, res)=> {
     res.sendFile('tidsstangsel.html',{root:pageDir});
