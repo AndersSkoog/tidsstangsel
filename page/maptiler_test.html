@@ -1,42 +1,101 @@
 <!DOCTYPE html>
 <html>
-  <head>
-    <meta name="viewport" content="initial-scale=1,maximum-scale=1,user-scalable=no" />
-    <title>Vector Tiles in Leaflet JS</title>
-    <script src="https://unpkg.com/maplibre-gl@^4.7.1/dist/maplibre-gl.js"></script>
-    <link href="https://unpkg.com/maplibre-gl@^4.7.1/dist/maplibre-gl.css" rel="stylesheet" />
-    <style>
-      #map {
-        position: absolute; 
-        top: 0; 
-        right: 0; 
-        bottom: 0; 
-        left: 0;
-        height:90%; 
-        width: 100%;
-    }
-    </style>
-  </head>
-  <body>
-    <div id="map"></div>
-    <script>
-        const bounds_se = {lat:65.780251,lng:22.563171};
-        const bounds_nw = {lat:66.415649,lng:24.342957};
-        //const map_bounds_se = {lat:66.10841570645661,lng:24.308165089469185};
-        //const map_bounds_nw = {lat:65.79491483132819,lng:23.3649201362781};
-        const map_bb = L.latLngBounds([[66.10841570645661,24.308165089469185],[65.79491483132819,23.3649201362781]]);
-        const map_center = {lat:65.94215788637115,lng:23.77156416494242};
-        const key = 'jSU91TnyBylrPHjjQvrJ';
-        const max_zoom = 18;
-        const min_zoom = 9;
-        const map = L.map('map').setView(map_center, 7);
-        const mtLayer = L.maptilerLayer({
-            apiKey: key,
-            style: "7140bd63-c77d-4259-b929-2e748e156f55", //optional
-        }).addTo(map);
-        map_obj.setMaxBounds(map_bb);
-        map_obj.fitBounds(map_bb);
 
-    </script>
-  </body>
+<head>
+  <meta charset="utf-8" />
+  <title>Display a map</title>
+  <meta name="viewport" content="initial-scale=1,maximum-scale=1,user-scalable=no" />
+  <script src="https://cdn.maptiler.com/maptiler-sdk-js/v2.3.0/maptiler-sdk.umd.js"></script>
+  <link href="https://cdn.maptiler.com/maptiler-sdk-js/v2.3.0/maptiler-sdk.css" rel="stylesheet" />
+  <style>
+    body {
+      margin: 0;
+      padding: 0;
+    }
+
+    #map {
+      position: absolute;
+      top: 0;
+      bottom: 0;
+      width: 100%;
+    }
+
+    #mapstyles {
+      position: relative;
+      top: 5px;
+      left: 5px;
+      z-index: 1000;
+    }
+  </style>
+</head>
+
+<body>
+  <div id="map">
+    <select name="mapstyles" id="mapstyles" class="form-select mapstyles-select">
+      <optgroup label="Navigation and city exploration">
+        <option value="STREETS">STREETS</option>
+        <option value="STREETS.DARK">STREETS.DARK</option>
+        <option value="STREETS.LIGHT">STREETS.LIGHT</option>
+        <option value="STREETS.PASTEL">STREETS.PASTEL</option>
+      </optgroup>
+      <option value="OUTDOOR">OUTDOOR</option>
+      <option value="WINTER">WINTER</option>
+      <option value="SATELLITE">SATELLITE</option>
+      <option value="HYBRID" selected>HYBRID</option>
+      <optgroup label="Data visualization">
+        <option value="DATAVIZ">DATAVIZ</option>
+        <option value="DATAVIZ.DARK">DATAVIZ.DARK</option>
+        <option value="DATAVIZ.LIGHT">DATAVIZ.LIGHT</option>
+      </optgroup>
+      <optgroup label="Minimalist and general purpose">
+        <option value="BASIC">BASIC</option>
+        <option value="BASIC.DARK">BASIC.DARK</option>
+        <option value="BASIC.LIGHT">BASIC.LIGHT</option>
+      </optgroup>
+      <optgroup label="High contrast navigation">
+        <option value="BRIGHT">BRIGHT</option>
+        <option value="BRIGHT.DARK">BRIGHT.DARK</option>
+        <option value="BRIGHT.LIGHT">BRIGHT.LIGHT</option>
+        <option value="BRIGHT.PASTEL">BRIGHT.PASTEL</option>
+      </optgroup>
+      <optgroup label="Topographic study">
+        <option value="TOPO">TOPO</option>
+        <option value="TOPO.SHINY">TOPO.SHINY</option>
+        <option value="TOPO.PASTEL">TOPO.PASTEL</option>
+        <option value="TOPO.TOPOGRAPHIQUE">TOPO.TOPOGRAPHIQUE</option>
+      </optgroup>
+      <optgroup label="Minimalist">
+        <option value="VOYAGER">VOYAGER</option>
+        <option value="VOYAGER.DARK">VOYAGER.DARK</option>
+        <option value="VOYAGER.LIGHT">VOYAGER.LIGHT</option>
+        <option value="VOYAGER.VINTAGE">VOYAGER.VINTAGE</option>
+      </optgroup>
+      <optgroup label="High contrast">
+        <option value="TONER">TONER</option>
+        <option value="TONER.BACKGROUND">TONER.BACKGROUND</option>
+        <option value="TONER.LITE">TONER.LITE</option>
+        <option value="TONER.LINES">TONER.LINES</option>
+      </optgroup>
+      <optgroup label="Neutral greyscale style with hillshading">
+        <option value="BACKDROP">BACKDROP</option>
+        <option value="BACKDROP.DARK">BACKDROP.DARK</option>
+        <option value="BACKDROP.LIGHT">BACKDROP.LIGHT</option>
+      </optgroup>
+      <option value="OPENSTREETMAP">OPENSTREETMAP</option>
+    </select>
+  </div>
+  <script>
+    maptilersdk.config.apiKey = 'YOUR_MAPTILER_API_KEY_HERE';
+    const map = new maptilersdk.Map({
+      container: 'map', // container id
+      style: maptilersdk.MapStyle.HYBRID,
+      center: [2.33174, 48.86245], // starting position [lng, lat]
+      zoom: 15, // starting zoom
+    });
+    document.getElementById('mapstyles').addEventListener('change', (e) => {
+      const style_code = e.target.value.split(".");
+      style_code.length === 2 ? map.setStyle(maptilersdk.MapStyle[style_code[0]][style_code[1]]) : map.setStyle(maptilersdk.MapStyle[style_code[0]]);
+    });
+  </script>
+</body>
 </html>
