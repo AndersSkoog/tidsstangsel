@@ -127,7 +127,7 @@ app.get('/test2', (req, res)=> {
 });
 
 app.get('/leaf', (req, res)=> {
-    res.sendFile('maptiler_test.html',{root:pageDir});
+    res.sendFile('leaflet_test.html',{root:pageDir});
 });
 
 
