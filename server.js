@@ -17,8 +17,8 @@ const upload = multer({ dest: uploadDir });
 
 app.use((req, res, next) => {
     // Clone request headers to modify them
-    req.setHeader('Sec-Fetch-Mode', 'cors');
-    req.setHeader('Sec-Fetch-Site', 'cross-site');
+    //req.setHeader('Sec-Fetch-Mode', 'cors');
+    //req.setHeader('Sec-Fetch-Site', 'cross-site');
 
     // Log request headers
     console.log('Request Headers:', headers); // Logging the modified headers
@@ -29,8 +29,8 @@ app.use((req, res, next) => {
     res.setHeader('Access-Control-Allow-Origin', '*');
     
     // Set the modified headers in the response (if needed)
-    res.setHeader('Sec-Fetch-Mode', 'cors');
-    res.setHeader('Sec-Fetch-Site', 'cross-site');
+    //res.setHeader('Sec-Fetch-Mode', 'cors');
+    //res.setHeader('Sec-Fetch-Site', 'cross-site');
 
     // Listen for the response to log response headers
     res.on('finish', () => {
