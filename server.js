@@ -1,6 +1,7 @@
 //import helmet from "helmet";
 const express = require('express');
 const multer = require('multer');
+const https = require('https')
 const cors = require('cors');
 const { spawn } = require('child_process');
 const { createProxyMiddleware } = require('http-proxy-middleware');
@@ -84,43 +85,10 @@ const limiter = rateLimit({
 	legacyHeaders: false, // Disable the `X-RateLimit-*` headers
 });
 
-//sapp.use('/tiles', express.static(path.join(__dirname, 'tiles')));
-
-/*
-app.use((req, res, next) => {
-    res.setHeader("Content-Security-Policy", "default-src 'self'; img-src 'self' data: *.tile.openstreetmap.org; script-src 'self'; style-src 'self'");
-    next();
-});
-*/
-/*
-const osmProxy = createProxyMiddleware({
-    target: 'https://tile.openstreetmap.org', // Base URL of the tile server
-    changeOrigin: true,
-    pathRewrite: {
-        '^/osm': '', // Strip the /osm prefix from the path
-    },
-    onError: (err, req, res) => {
-        console.error('Proxy error:', err);
-        res.status(500).send("Internal server error");
-    }
-});
-*/
+function getTile()
 
 
-//app.use(helmet());
-app.use('/static', express.static(path.join(__dirname, 'static')));
-/*
-app.use('/osm', osmProxy, (req, res) => {
-    res.setHeader('Content-Type', 'image/png');
-    console.log(`Requesting tile: z=${req.params.z}, x=${req.params.x}, y=${req.params.y}`);
-    next(); 
-});
 
-app.get('/osm/*', (req, res) => {
-    const url = req.url.replace('/osm/', 'https://tile.openstreetmap.org/');
-    req.pipe(request(url)).pipe(res);
-});
-*/
 
 app.get('/tidsstangsel', (req, res)=> {
     res.sendFile('tidsstangsel.html',{root:pageDir});
@@ -171,6 +139,107 @@ app.post('/streaminit',ipCheck, limiter, upload.single('file'), (req, res)=> {
     start_stream(inpath);
     res.send("success!");
 });
+
+const maptiler_apikey = 'UlZm4aEVd5R6TdbUgwrH';
+const TILE_SERVER_HOST = 'https://api.maptiler.com';
+///maps/topo/{z}/{x}/{y}.png?key='+apikey; 
+
+app.get('/tiles/:z/:x/:y', (req, res) => {
+    const { z, x, y } = req.params;
+    console.log(req.headers);
+    const requrl = `${TILE_SERVER_HOST}/maps/topo/${z}/${x}/${y}.png?key=${maptiler_apikey}`;
+    const options = {
+        hostname: TILE_SERVER_HOST,
+        path: `/${z}/${x}/${y}.png?key=${maptiler_apikey}`,
+        method: 'GET',
+        headers: {
+          'Accept': 'image/png,image/*;q=0.8',
+          'Connection': 'keep-alive'
+        }
+    };
+      // Log the headers you are sending in the proxied request
+    console.log('Proxied request headers:', options.headers);
+
+    // Make the request to OpenStreetMap
+    const proxyReq = https.request(options, proxyRes => {
+      // Log the response headers from the proxied request
+      console.log('Response headers from OSM:', proxyRes.headers);
+
+      // Forward the status code and headers
+      res.writeHead(proxyRes.statusCode, proxyRes.headers);
+
+      // Stream the response back to the client
+      proxyRes.pipe(res, { end: true });
+    });
+
+    proxyReq.on('error', (err) => {
+      console.error('Proxy Request Error:', err);
+      res.status(500).send('Error in proxying request');
+    });
+
+    proxyReq.end(); // End the request
+    /*
+    const options = {
+        hostname: TILE_SERVER_HOST, // Tile server hostname
+        port: 443,                  // HTTPS port
+        path: requrl,             // The path to the tile
+        method: 'GET',              // HTTP method
+        headers: {
+            'Accept': 'image/png',
+            'Accept-Language': 'sv-SE,sv;q=0.8,en-US;q=0.5,en;q=0.3',
+            'User-Agent': '',
+        }
+    };
+    /*
+
+    // Remove the User-Agent header
+    delete options.headers['user-agent'];
+
+    // Log the request headers before sending to the tile server
+    console.log(`Forwarding request to tile server: ${tilePath}`);
+    console.log('Request Headers:', options.headers);
+
+    // Send the request to the tile server
+    const proxyReq = https.request(options, (proxyRes) => {
+        // Log the response status code and headers from the tile server
+        console.log('Tile Server Response Status:', proxyRes.statusCode);
+        console.log('Tile Server Response Headers:', proxyRes.headers);
+
+        // Forward the status code and headers from the tile server to the client
+        res.writeHead(proxyRes.statusCode, proxyRes.headers);
+
+        // Pipe the data from the tile server back to the client (the actual tile image)
+        proxyRes.pipe(res);
+    });
+
+    // Handle any errors during the proxy request
+    proxyReq.on('error', (e) => {
+        console.error(`Problem with proxy request: ${e.message}`);
+        res.writeHead(500);
+        res.end('Internal Server Error');
+    });
+
+    // End the request
+    proxyReq.end();
+    */
+});
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 // Start the server
