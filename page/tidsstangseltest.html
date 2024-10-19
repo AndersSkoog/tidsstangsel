@@ -12,9 +12,19 @@
     <div id="map">
         <a href="https://www.maptiler.com" style="height:90%;width:100%;position:absolute;left:10px;bottom:10px;z-index:999;"><img src="https://api.maptiler.com/resources/logo.svg" alt="MapTiler logo"></a>
     </div>
+    <img id="map_elem" src="https://tidsstangsel-stage.up.railway.app/map/bounding?minx=24.308165089469185&miny=66.10841570645661&maxx=66.10841570645661&maxy=65.79491483132819&width=500&height=500" >
     <button id="center_to_pos_btn">centrera till position</button>
     <audio id="audio_element" hidden></audio>
 
 </body>
-<script src="/static/tidsstangseltest.js"></script>
+<script>
+var map_elem = document.getElementById("map_elem");
+const map_bounds_se = {lat:66.10841570645661,lng:24.308165089469185};
+const map_bounds_nw = {lat:65.79491483132819,lng:23.3649201362781};
+const mapw = 500;
+const maph = 500;
+
+
+</script>
+<!--<script src="/static/tidsstangseltest.js"></script>-->
 </html>
