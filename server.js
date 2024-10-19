@@ -28,8 +28,8 @@ app.use((req, res, next) => {
     console.log("Login hostname:", hn);
 
     // Setting security and CORS headers in the response
-    res.setHeader('Access-Control-Allow-Origin', '*');
-    res.setHeader('Referrer-Policy', 'no-referrer');
+    //res.setHeader('Access-Control-Allow-Origin', '*');
+    res.setHeader('Referrer-Policy', 'same-origin');
     // Set the modified headers in the response (if needed)
     //res.setHeader('Sec-Fetch-Mode', 'cors');
     //res.setHeader('Sec-Fetch-Site', 'cross-site');
