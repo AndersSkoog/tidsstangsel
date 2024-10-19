@@ -1,6 +1,5 @@
 (function(){
-    const apikey = 'UlZm4aEVd5R6TdbUgwrH';
-    var mapTilerUrl = 'https://api.maptiler.com/maps/topo/{z}/{x}/{y}.png?key='+apikey; 
+    var mapTilerUrl = '/tile/{z}/{x}/{y}';
     const center_btn = document.getElementById('center_to_pos_btn');
     const audio_element = document.getElementById('audio_element');
     var hls = null;
