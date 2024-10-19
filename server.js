@@ -96,6 +96,10 @@ app.get('/test', (req, res)=> {
     res.sendFile('tidsstangseltest.html',{root:pageDir});
 });
 
+app.get('/staticmap',(req, res)=> {
+    res.sendFile('staticmaptest.html',{root:pageDir});
+});
+
 app.get('/stream/:file', (req, res) => {
     const fileName = req.params.file;  // Get the file name from the URL
     res.sendFile(fileName,{root:streamDir,cacheControl:false});
