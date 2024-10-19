@@ -85,10 +85,6 @@ const limiter = rateLimit({
 	legacyHeaders: false, // Disable the `X-RateLimit-*` headers
 });
 
-function getTile()
-
-
-
 
 app.get('/tidsstangsel', (req, res)=> {
     res.sendFile('tidsstangsel.html',{root:pageDir});
