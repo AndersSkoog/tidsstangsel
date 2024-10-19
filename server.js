@@ -15,6 +15,7 @@ const streamDir = path.join(__dirname, 'stream');
 const uploadDir = path.join(__dirname, 'uploads');
 const admin_allowedIps = ['77.218.225.119'];
 const upload = multer({ dest: uploadDir });
+const MAPTILER_API_KEY = "k3AhdT7RvAWsbNcwB1N2";
 
 app.use((req, res, next) => {
     // Clone request headers to modify them
@@ -104,6 +105,53 @@ app.get('/stream/:file', (req, res) => {
     const fileName = req.params.file;  // Get the file name from the URL
     res.sendFile(fileName,{root:streamDir,cacheControl:false});
 });
+
+app.get('/map/positional', async (req, res) => {
+    try {
+      // Define the parameters for your static map
+      const longitude = req.query.lon || '-74.0060'; // Default to New York City
+      const latitude = req.query.lat || '40.7128';
+      const zoom = req.query.zoom || 10;
+      const width = req.query.width || 600;
+      const height = req.query.height || 400;
+  
+      // Build the MapTiler Static Map API URL
+      const mapUrl = `https://api.maptiler.com/maps/basic/static/${longitude},${latitude},${zoom}/${width}x${height}.png?key=${MAPTILER_API_KEY}`;
+  
+      await axios.get(mapUrl, { responseType: 'arraybuffer' })
+      .then(function (response) {
+        res.set('Content-Type', 'image/png');
+        res.send(response.data)})
+      .catch(function (error) {console.log(error);})
+    } catch (error) {
+      res.status(500).send('Error generating static map');
+    }
+  });
+
+  app.get('/map/bounding', async (req, res) => {
+    try {
+      // Define the parameters for your static map
+      const minx = req.query.minx || '-74.0060'; // Default to New York City
+      const miny = req.query.miny || '40.7128';
+      const maxx = req.query.maxx || 10;
+      const maxy = req.query.maxy || 10;
+      const width = req.query.width || 500;
+      const height = req.query.height || 500;
+  
+      // Build the MapTiler Static Map API URL
+      //https://api.maptiler.com/maps/{mapId}/static/{minx},{miny},{maxx},{maxy}/{width}x{height}{scale}.{format}
+      const mapUrl = `https://api.maptiler.com/maps/streets/static/${minx},${miny},${maxx},${maxy}/${width}x${height}.png?key=${MAPTILER_API_KEY}`;
+  
+      // Fetch the static map image from MapTiler
+      await axios.get(mapUrl, { responseType: 'arraybuffer' })
+      .then(function (response) {
+        res.set('Content-Type', 'image/png');
+        res.send(response.data)})
+      .catch(function (error) {console.log(error);})
+    } catch (error) {
+        res.status(500).send('Error generating static map');
+    }
+  });
 
 
 app.get('/streaminit',ipCheck,limiter, (req, res)=> {
