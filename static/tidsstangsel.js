@@ -71,6 +71,8 @@
         attribution: '&copy; <a href="https://www.maptiler.com/copyright/">MapTiler</a> contributors',
         minZoom:10,
         maxZoom: 18,
+        refrerPolicy:'no-referer',
+        crossOrigin:'anonymous'
     }).addTo(map_obj);  
     map_obj.setMaxBounds(map_bounds);
     map_obj.fitBounds(map_bounds);
