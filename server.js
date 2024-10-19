@@ -16,20 +16,35 @@ const admin_allowedIps = ['77.218.225.119'];
 const upload = multer({ dest: uploadDir });
 
 app.use((req, res, next) => {
+    // Clone request headers to modify them
+    let headers = { ...req.headers };
+
+    // Modify the headers if they are present
+    if (headers['sec-fetch-mode']) {
+        headers['sec-fetch-mode'] = 'cors';
+    }
+    if (headers['sec-fetch-site']) {
+        headers['sec-fetch-site'] = 'cross-site';
+    }
+
     // Log request headers
-    console.log('Request Headers:', req.headers);
-    var hn = req.protocol+req.hostname;
-    console.log("login hostname:", hn);
-    //res.setHeader("Content-Security-Policy", "default-src 'none'");
-    //res.setHeader("Content-Security-Policy", "default-src 'none'; worker-src blob:; child-src blob:; img-src '*' data: blob:; script-src 'self'; style-src 'self';");
+    console.log('Request Headers:', headers); // Logging the modified headers
+    var hn = req.protocol + '://' + req.hostname;
+    console.log("Login hostname:", hn);
+
+    // Setting security and CORS headers in the response
     res.setHeader('Access-Control-Allow-Origin', '*');
-    //res.setHeader('Referrer-Policy', 'no-referrer');
+    
+    // Set the modified headers in the response (if needed)
+    res.setHeader('Sec-Fetch-Mode', headers['sec-fetch-mode']);
+    res.setHeader('Sec-Fetch-Site', headers['sec-fetch-site']);
+
     // Listen for the response to log response headers
     res.on('finish', () => {
         console.log('Response Headers:', res.getHeaders());
     });
 
-    next(); // Call the next middleware or route handler
+    next(); // Proceed to the next middleware or route handler
 });
 
 
