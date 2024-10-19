@@ -139,10 +139,36 @@ app.post('/streaminit',ipCheck, limiter, upload.single('file'), (req, res)=> {
 const maptiler_apikey = 'UlZm4aEVd5R6TdbUgwrH';
 const TILE_SERVER_HOST = 'https://api.maptiler.com';
 ///maps/topo/{z}/{x}/{y}.png?key='+apikey; 
+const osmProxy = createProxyMiddleware({
+    target: TILE_SERVER_HOST, // Set the base URL for the proxy
+    changeOrigin: true,
+    pathRewrite: {
+        '^/tiles': '/maps/topo', // Rewrite the path to the correct format for MapTiler
+    },
+    onProxyReq: (proxyReq, req, res) => {
+        // Add the API key as a query parameter to the proxied request
+        const apiKeyParam = `?key=${maptiler_apikey}`;
+        proxyReq.path += apiKeyParam; // Append the API key to the request path
+        console.log(`Proxying request to: ${proxyReq.path}`);
+    },
+    onError: (err, req, res) => {
+        console.error('Proxy error:', err);
+        res.status(500).send('Internal Server Error while fetching tiles');
+    }
+});
+
+app.use('/tiles/:z/:x/:y', (req, res, next) => {
+    console.log(`Requesting tile: z=${req.params.z}, x=${req.params.x}, y=${req.params.y}`);
+    console.log('tile request headers', req.rawHeaders);
+    next(); // Pass control to the proxy middleware
+}, osmProxy);
+
+
+
 
 app.get('/tiles/:z/:x/:y', (req, res) => {
     const { z, x, y } = req.params;
-    console.log("tilereqest_headers",req.headers);
+    console.log("tilereqest_headers,"req.headers);
     const requrl = `${TILE_SERVER_HOST}/maps/topo/${z}/${x}/${y}.png?key=${maptiler_apikey}`;
     const options = {
         hostname: TILE_SERVER_HOST,
