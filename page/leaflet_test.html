@@ -4,8 +4,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Simple Map</title>
-    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
-    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+    <link rel="stylesheet" href="/static/leaflet/leaflet_dist.css" />
+    <script src="/static/leaflet/leaflet_dist.js"></script>
     <style>
         #map {
             height: 500px; /* Set map height */
@@ -20,9 +20,10 @@
         var map = L.map('map').setView([65.7, 24.1], 10);  // Change lat, lng, zoom level as needed
 
         // Add OpenStreetMap tiles (or use your own tile server if necessary)
-        L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+        L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
             maxZoom: 18,
-            attribution: '© OpenStreetMap contributors'
+            attribution: '© OpenStreetMap contributors',
+            contact:"landsortsteater@gmail.com"
         }).addTo(map);
 
         // Add a marker to the map at a specified location
