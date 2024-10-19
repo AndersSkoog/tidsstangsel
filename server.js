@@ -20,9 +20,9 @@ app.use((req, res, next) => {
     console.log('Request Headers:', req.headers);
     var hn = req.protocol+req.hostname;
     console.log("login hostname:", hn);
-    res.setHeader("Content-Security-Policy", "default-src 'none'");
+    //res.setHeader("Content-Security-Policy", "default-src 'none'");
     //res.setHeader("Content-Security-Policy", "default-src 'none'; worker-src blob:; child-src blob:; img-src '*' data: blob:; script-src 'self'; style-src 'self';");
-    //res.setHeader('Access-Control-Allow-Origin', '*');
+    res.setHeader('Access-Control-Allow-Origin', '*');
     //res.setHeader('Referrer-Policy', 'no-referrer');
     // Listen for the response to log response headers
     res.on('finish', () => {
