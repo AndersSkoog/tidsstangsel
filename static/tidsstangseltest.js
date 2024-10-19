@@ -1,5 +1,5 @@
 (function(){
-    var mapTilerUrl = 'https://tidsstangsel-stage.up.railway.app/tiles/{z}/{x}/{y}.png';
+    var mapTilerUrl = 'https://api.maptiler.com/maps/topo/{z}/{x}/{y}/.png?key=k3AhdT7RvAWsbNcwB1N2'
     const center_btn = document.getElementById('center_to_pos_btn');
     const audio_element = document.getElementById('audio_element');
     var hls = null;
