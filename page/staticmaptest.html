@@ -1,0 +1,32 @@
+<!doctype html>
+<html lang="sv">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tidsstängsel</title>
+    <script src="/static/hls/hls.js"></script>
+</head>
+<body>
+    <img id="map_img"></img>
+    <button id="center_to_pos_btn">centrera till position</button>
+    <audio id="audio_element" hidden></audio>
+</body>
+<script>
+    "lat/lng"
+    "65.782505,22.615356,66.447497,24.268799"
+    "minx=22.615356","maxx=24.268799"
+    "maxy=66.447497","mminy=65.782505"
+
+    "lng/lat"
+    "22.615356,65.782505,24.268799,66.447497"
+    "minx=22.615356","maxy=24.268799"
+    "maxx=24.268799","minx=65.782505"
+    const map_bounds = {
+        minx:22.615356,miny:65.782505,
+        maxx:24.268799,maxy:66.447497
+    }
+
+    var src_str = `https://api.maptiler.com/maps/streets/static/${map_bounds.minx}/${map_bounds.miny}/${map_bounds.maxx}/${map_bounds.maxy}/500x500.png?key=k3AhdT7RvAWsbNcwB1N2`;
+    document.getElementById("map_img").setAttribute("src",src_str);
+</script>
+</html>
