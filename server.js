@@ -21,7 +21,7 @@ app.use((req, res, next) => {
     //req.setHeader('Sec-Fetch-Site', 'cross-site');
 
     // Log request headers
-    console.log('Request Headers:', headers); // Logging the modified headers
+    //console.log('Request Headers:', headers); // Logging the modified headers
     var hn = req.protocol + '://' + req.hostname;
     console.log("Login hostname:", hn);
 
